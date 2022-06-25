@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 LIMIT = 15
 URL = "https://kr.indeed.com/jobs?q=python&l=&from=searchOnHP"
 
-def extract_indeed_pages():
+def get_last_page():
   result = requests.get(URL)
   
   soup = BeautifulSoup(result.text, "html.parser")
@@ -21,32 +21,53 @@ def extract_indeed_pages():
 
   return max_page
 
+def extract_job(html):
+  title = html.find("h2", {"class": "jobTitle"})
+  company = html.find("span", {"class": "companyName"})
+  location = html.find("div", {"class": "companyLocation"})
+  job_id = ""
+  
+  if (title != None):
+    job_id = title.find("a")["data-jk"]
+    title = title.find("a")["aria-label"]
+    company_anchor = company.find("a")
+    
+    if (company_anchor != None):
+      company = company_anchor.string
+    else:
+      company = company.string
 
-def extract_indeed_jobs(last_page):
+    company = company.strip()
+    location = location.string
+    
+  return {
+    "title": title, 
+    "company": company, 
+    "location": location, 
+    "link": f"https://kr.indeed.com/viewjob?jk={job_id}"
+  }
+
+def extract_jobs(last_page):
   jobs = []
   
-  #for page in range(last_page):
-  result = requests.get(f"{URL}&start={0 * LIMIT}")
-  soup = BeautifulSoup(result.text, "html.parser")
-  result_list = soup.find("ul", {"class" : "jobsearch-ResultsList"})
-  results = result_list.find_all("li")
-
-  for result in results:
-    title = result.find("h2", {"class": "jobTitle"})
-    company = result.find("span", {"class": "companyName"})
+  for page in range(last_page):
+    print(f"Scrapping page {page}")
     
-    if (title != None):
-      title = title.find("a")["aria-label"]
-      company_anchor = company.find("a")
-      
-      print(title)
-      
-      if (company_anchor != None):
-        company = company_anchor.string
-      else:
-        company = company.string
-
-      company = company.strip()
-      print(company)
+    result = requests.get(f"{URL}&start={page * LIMIT}")
+    soup = BeautifulSoup(result.text, "html.parser")
+    result_list = soup.find("ul", {"class" : "jobsearch-ResultsList"})
+    results = result_list.find_all("li")
   
+    for result in results:
+      job = extract_job(result)
+  
+      if (job['title'] != None):
+        jobs.append(job)
+  
+  return jobs
+
+def get_jobs():
+  last_page = get_last_page()
+  jobs = extract_jobs(last_page)
+
   return jobs
