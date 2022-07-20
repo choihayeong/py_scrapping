@@ -1,13 +1,21 @@
 # py_scrapping
 scrapper(indeed web site) made with python3
 
-## indeed_scrapping
-scrapper for indeed web site to .csv file
+## learn_py
+python challenge with nomad coder
+### 📂 01_fix_broken_code
+learning and using basic python function
+### 📂 02_dictionary_method
+using python dictionary methods
+### 📂 03_learn_request_module
+getting python requests module with some examples
 
 ## projects
-📂 all_about_jobs
+### 📂 01_indeed_scrapping
+scrapper for indeed web site(korean version) to .csv file
 
-### python import module
+### 📂 02_all_about_jobs
+#### python import module
 requests (2.28) <br>
 beautifulsoup4 (4.11) <br>
 flask
