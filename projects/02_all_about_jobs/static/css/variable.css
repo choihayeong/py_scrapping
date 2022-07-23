@@ -1,0 +1,13 @@
+@charset "UTF-8";
+:root {
+	/* color */
+	--point : #aac3ff;
+    --pointLight : #ddf6ff;
+    --pointDark : #7993cc;
+    --point2 : #ff4949;
+    --point2Light : #ff7f75;
+    --point2Dark : #c50021;
+	--black : #001;
+	--white : #fff;
+    --defaultGray : #ccc;
+}
