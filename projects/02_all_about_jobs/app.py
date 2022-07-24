@@ -1,58 +1,57 @@
-# from os import sendfile
-from flask import Flask, redirect, render_template, request, send_file
-from scrapping import get_jobs
-from exporter import save_to_file
+from flask import Flask, render_template, request, redirect, send_file
+from scrapper import remoteok, wework, indeed
+from exporter import exporter
 
-app = Flask(__name__)
+app = Flask("find_remote_jobs")
 
 fake_db = {}
 
-@app.route('/')
+@app.route("/")
 def home():
     return render_template("home.html")
 
-@app.route('/report')
-def contact():
-    keyword = request.args.get("keyword")
+@app.route("/report")
+def report():
+    job_keyword = request.args.get("job_keyword")
 
-    if keyword:
-        keyword = keyword.lower()
-        existingJobs = fake_db.get(keyword)
+    if job_keyword:
+        job_keyword = job_keyword.lower()
+        existing_job = fake_db.get(job_keyword)
 
-        if existingJobs:
-            jobs = existingJobs
+        if existing_job:
+            jobs = existing_job
         else:
-            jobs = get_jobs(keyword)
-            fake_db[keyword] = jobs
+            jobs = remoteok.get_jobs(job_keyword) + wework.get_jobs(job_keyword) + indeed.get_jobs(job_keyword)
+            fake_db[job_keyword] = jobs
     else:
         return redirect("/")
-        # return render_template("home.html")
 
     return render_template(
         "report.html",
-        searchingBy = keyword,
-        resultsNum = len(jobs),
+        jobKeyword = job_keyword,
+        resultNum = len(jobs),
         jobs = jobs
     )
 
 @app.route("/export")
 def export():
     try:
-        keyword = request.args.get("keyword")
+        job_keyword = request.args.get("job_keyword")
 
-        if not keyword:
+        if not job_keyword:
             raise Exception()
 
-        keyword = keyword.lower()
-        jobs = fake_db.get(keyword)
+        job_keyword = job_keyword.lower()
+        jobs = fake_db.get(job_keyword)
 
         if not jobs:
             raise Exception()
 
-        save_to_file(jobs)
-        return send_file("your_jobs.csv", as_attachment=True)
+        exporter.save_to_file(jobs)
+        return send_file("jobs.csv")
 
     except:
         return redirect("/")
 
-# app.run(host='0.0.0.0')
+
+# app.run(host="0.0.0.0")

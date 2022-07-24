@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url('./variable.css');
+@import url('./variables.css');
 @import url('./reset.css');
 /* common */
 body {background:#ffffe9}
@@ -7,7 +7,7 @@ a {display:inline-block;color:var(--point2);transition:all 0.3s ease-out}
 a:hover {color:var(--point2Dark)}
 .wrap {max-width:1200px;margin:0 auto;color:var(--black);font-family:'Raleway', 'Noto Sans KR';font-size:18px;line-height:1.6}
 .title {font-size:36px;font-weight:bold;text-align:center;text-transform:uppercase}
-.form {text-align:center}
+.form {display:flex;justify-content:center;gap:10px;text-align:center}
 .form__box {display:inline-block}
 .ipt {min-width:250px;padding:10px;border:1px solid var(--defaultGray);background:var(--white); border-radius:5px}
 .btn-search {padding:10px;border:1px solid var(--point);border-radius:5px;background:var(--point);color:var(--white);font-weight:bold;cursor:pointer;text-transform:uppercase;transition:all 0.3s ease-out}
@@ -22,8 +22,12 @@ a:hover {color:var(--point2Dark)}
 .section--result {padding:15px 0;border:2px solid var(--defaultGray);border-radius:10px;background:var(--white);text-align:center}
 .section--report {margin-top:30px}
 .section__title {margin-bottom:15px;font-size:24px;font-weight:bold;text-align:center}
-.section__description strong{font-weight:500}
-.report__header, .report__contents {display:grid;grid-gap:20px;grid-template-columns:2fr 1fr 1fr 1fr;padding:10px 0;border-bottom:1px solid var(--defaultGray);text-align:center}
-.report__header {border-top:2px solid var(--black);border-bottom:1px solid var(--black);background:var(--point);font-size:20px;font-weight:600}
-.report__contents span:first-child {text-align:left}
-.link-export {margin-top:15px}
+.section__description strong {font-weight:500}
+.report {display:flex;flex-wrap:wrap;gap:30px}
+.report__item {flex-basis:calc(33.333% - 20px);padding:30px;border:1px solid var(--darkGray);border-radius:10px;background:#fff;transition:all 0.3s ease-out}
+.report__item:hover {background:var(--pointLight)}
+.report__company {color:var(--darkGray)}
+.report__title {display:block;margin-bottom:15px;font-weight:600;font-size:20px}
+.report__link:hover {text-decoration:underline;text-underline-offset:3px}
+.link-export {margin-top:15px;padding:10px;color:var(--white);border-radius:5px;background:var(--point);font-weight:bold;transition:all 0.3s ease-out}
+.link-export:hover {color:var(--white);background:var(--pointDark)}

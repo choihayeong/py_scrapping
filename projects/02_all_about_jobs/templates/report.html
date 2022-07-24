@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Raleway:wght@300;400;500;700&display=swap">
-    <link rel="stylesheet" href="{{ url_for("static", filename="css/style.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div id="wrap" class="wrap">
@@ -18,34 +18,24 @@
         
         <div class="content">
             <section class="section section--result">
-                <h2 class="section__title">Search Results</h2>
-                
+                <h2 class="section__title">Searching Result</h2>
+
                 <div class="section__description">
-                    Found <strong>{{ resultsNum }}</strong> results for: <strong>{{ searchingBy }}</strong>
+                    You can choose <strong>{{ resultNum }}</strong> jobs for <strong>{{ jobKeyword }}</strong>. 
                     <br>
-                    <a href="/export?keyword={{ searchingBy }}" class="link-export">Export to CSV</a>
+                    <a href="/export?job_keyword={{ jobKeyword }}" class="link-export">Export to CSV</a>
                 </div>
             </section>
-    
+
             <section class="section section--report">
                 <h2 class="section__title">Report</h2>
-    
+
                 <div class="report">
-                    <div class="report__header">
-                        <span>Title</span>
-                        <span>Company</span>
-                        <span>Location</span>
-                        <span>Link</span>
-                    </div>
-    
                     {% for job in jobs %}
-                    <div class="report__contents">
-                        <span>{{ job.title }}</span>
-                        <span>{{ job.company }}</span>
-                        <span>{{ job.location }}</span>
-                        <span>
-                            <a href="{{ job.link }}" target="_blank">Apply</a>
-                        </span>
+                    <div class="report__item">
+                        <span class="report__company">{{ job.company }}</span>
+                        <span class="report__title">{{ job.title }}</span>
+                        <a href="{{ job.link }}" target="_blank" class="report__link">Apply</a>
                     </div>
                     {% endfor %}
                 </div>
